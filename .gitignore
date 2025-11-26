@@ -1,37 +1,17 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+build/
 
-# Virtual Environment
-venv/
-env/
-ENV/
-.venv
-
-# Streamlit
-.streamlit/
-
-# Model cache
-.cache/
-models/
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # IDE
 .vscode/
@@ -46,8 +26,22 @@ Thumbs.db
 
 # Logs
 *.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Temporary files
-*.tmp
-temp/
+# Testing
+coverage/
 
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+vite.config.ts.timestamp-*
+
+# Python (legacy)
+__pycache__/
+*.py[cod]
+venv/
+.venv/

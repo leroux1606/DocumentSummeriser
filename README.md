@@ -1,84 +1,130 @@
-# Document Summarizer
+# Document Uploader
 
-A Streamlit-based web application that allows you to upload documents (PDF, Word, or Text files) and get AI-powered summaries using transformer models.
+A modern, production-ready document uploader application built with React 18, TypeScript, and Tailwind CSS.
 
 ## Features
 
-- 📄 Support for multiple document formats:
-  - PDF files (.pdf)
-  - Word documents (.docx)
-  - Text files (.txt)
-- 🤖 AI-powered summarization using Facebook's BART model
-- ⚙️ Customizable summary length (min/max words)
-- 📥 Download summaries as text files
-- 👀 View extracted text before summarization
+- **Multi-file Upload**: Drag & drop or click to upload multiple files
+- **File Type Validation**: Supports PDF, Word, text, markdown, images, and more
+- **File Size Limits**: Configurable max file size (default 50MB)
+- **Progress Tracking**: Real-time upload progress for each file
+- **Batch Upload**: Upload multiple files with configurable concurrency
+- **Document Preview**: Preview images, PDFs, and text files inline
+- **File Management**: Download, delete, retry failed uploads
+- **Status Indicators**: Visual feedback for pending, uploading, completed, failed states
+- **Toast Notifications**: User-friendly error and success messages
+- **Responsive Design**: Works on desktop and mobile devices
+- **Accessibility**: Keyboard navigation and screen reader support
+
+## Supported File Types
+
+- **Documents**: PDF, DOCX, DOC, RTF
+- **Text**: TXT, MD (Markdown)
+- **Spreadsheets**: XLSX, XLS, CSV
+- **Images**: PNG, JPG, JPEG, GIF, WebP, SVG
+
+## Tech Stack
+
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Zustand** - State management
+- **react-dropzone** - Drag & drop handling
+- **Lucide React** - Icons
+- **Vite** - Build tool
 
 ## Installation
 
-1. **Clone or navigate to this repository**
-
-2. **Install dependencies using pnpm** (Note: For Python projects, use pip instead):
+1. **Clone the repository**
    ```bash
-   pip install -r requirements.txt
+   git clone https://github.com/leroux1606/DocumentSummeriser.git
+   cd DocumentSummeriser
    ```
 
-   Or if you prefer using a virtual environment (recommended):
+2. **Install dependencies**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
+   pnpm install
    ```
 
-## Usage
-
-1. **Start the Streamlit app**:
+3. **Start the development server**
    ```bash
-   streamlit run app.py
+   pnpm dev
    ```
 
-2. **Open your browser** - Streamlit will automatically open the app (usually at `http://localhost:8501`)
+4. **Open your browser** at `http://localhost:3000`
 
-3. **Upload a document** using the file uploader
+## Configuration
 
-4. **Adjust summary settings** (optional):
-   - Maximum summary length (50-250 words)
-   - Minimum summary length (10-100 words)
+Click the settings icon in the header to configure:
 
-5. **Click "Generate Summary"** to get your AI-powered summary
+- **Max File Size**: 10MB, 25MB, 50MB, or 100MB
+- **Max Files**: 5, 10, 20, or 50 files
+- **Concurrent Uploads**: 1-5 simultaneous uploads
 
-6. **Download the summary** if needed using the download button
+## Project Structure
 
-## How It Works
+```
+src/
+├── components/
+│   └── ui/
+│       ├── DropZone.tsx      # Drag & drop upload zone
+│       ├── FileList.tsx      # File queue display
+│       ├── FileItem.tsx      # Individual file card
+│       ├── ActionBar.tsx     # Upload actions (start, cancel, clear)
+│       ├── Preview.tsx       # Document preview modal
+│       ├── Toast.tsx         # Notification toasts
+│       └── index.ts          # Component exports
+├── services/
+│   └── uploadService.ts      # Upload API service (mock)
+├── store/
+│   └── useFileUploadStore.ts # Zustand state management
+├── types/
+│   └── index.ts              # TypeScript type definitions
+├── utils/
+│   └── fileUtils.ts          # File utility functions
+├── App.tsx                   # Main application
+├── main.tsx                  # Entry point
+└── index.css                 # Global styles
+```
 
-1. **Text Extraction**: The app extracts text from your uploaded document based on its format:
-   - PDFs: Uses PyPDF2 to extract text from each page
-   - Word documents: Uses python-docx to read paragraphs
-   - Text files: Reads directly with UTF-8 encoding support
+## API Integration
 
-2. **Text Processing**: Long documents are automatically chunked to fit the model's input requirements
+The current implementation uses a mock upload service. To connect to a real API:
 
-3. **Summarization**: Uses Facebook's BART-large-CNN model, which is specifically fine-tuned for summarization tasks
+1. Update `src/services/uploadService.ts`
+2. Replace the simulated upload with actual `fetch`/`axios` calls
+3. Configure your API endpoint and authentication
 
-4. **Result Display**: Shows the summary and allows you to download it
+Example:
+```typescript
+export async function uploadFile(file: File, onProgress: (progress: UploadProgress) => void) {
+  const formData = new FormData();
+  formData.append('file', file);
 
-## Requirements
+  const response = await fetch('/api/upload', {
+    method: 'POST',
+    body: formData,
+    // Add headers, auth tokens, etc.
+  });
 
-- Python 3.8 or higher
-- See `requirements.txt` for all dependencies
+  return response.json();
+}
+```
 
-## Notes
+## Building for Production
 
-- The first run will download the BART model (~1.6GB), which may take a few minutes
-- Large documents may take longer to process
-- The model runs on CPU by default. For faster processing, ensure PyTorch with CUDA support is installed for GPU acceleration
+```bash
+pnpm build
+```
 
-## Troubleshooting
+The built files will be in the `dist/` directory.
 
-- **Model download issues**: Ensure you have a stable internet connection for the first run
-- **Memory errors**: Try processing smaller documents or reduce the summary length
-- **File reading errors**: Ensure your document is not corrupted and is in a supported format
+## Preview Production Build
+
+```bash
+pnpm preview
+```
 
 ## License
 
-This project is open source and available for personal and commercial use.
-
+MIT License - feel free to use this project for personal or commercial purposes.
